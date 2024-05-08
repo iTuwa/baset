@@ -127,7 +127,7 @@ def school_attendance_app(title, database_file, attendance_log_file):
                 send_email(student_data.iloc[0]["Parent Email"], child_name, "sign in")
                 st.success(
                     f"{child_name} signed in successfully! Email sent to {student_data.iloc[0]['Parent Email']}.")
-                log_attendance(child_name, int(child_pin), "Sign In", attendance_log_file)
+                log_attendance(child_name, str(child_pin), "Sign In", attendance_log_file)
             else:
                 st.error("Invalid PIN. Please enter a valid PIN.")
 
@@ -139,7 +139,7 @@ def school_attendance_app(title, database_file, attendance_log_file):
                 send_email(student_data.iloc[0]["Parent Email"], child_name, "sign out")
                 st.success(
                     f"{child_name} signed out successfully! Email sent to {student_data.iloc[0]['Parent Email']}.")
-                log_attendance(child_name, int(child_pin), "Sign Out", attendance_log_file)
+                log_attendance(child_name, str(child_pin), "Sign Out", attendance_log_file)
             else:
                 st.error("Invalid PIN. Please enter a valid PIN.")
 
@@ -151,7 +151,7 @@ def school_attendance_app(title, database_file, attendance_log_file):
         if st.button("Generate Report"):
             try:
                 attendance_log = pd.read_csv(attendance_log_file)
-                child_attendance = attendance_log[attendance_log["PIN"] == int(child_pin)]
+                child_attendance = attendance_log[attendance_log["PIN"] == str(child_pin)]
                 if not child_attendance.empty:
                     st.write(f"Attendance Report for Child with PIN {child_pin}:")
                     st.write(child_attendance)
@@ -172,7 +172,7 @@ def school_attendance_app(title, database_file, attendance_log_file):
                 new_pin = st.text_input("Enter Student's PIN:")
                 new_email = st.text_input("Enter Parent's Email:")
                 if st.button("Add Student"):
-                    add_student(df, new_name, new_pin, new_email)
+                    add_student(df, new_name, str(new_pin), new_email)
             elif action == "Remove Student":
                 remove_name = st.selectbox("Select Student to Remove:",
                                            options=list(st.session_state.children_database["Name"]))
